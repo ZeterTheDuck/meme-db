@@ -27,13 +27,14 @@ public class Meme {
     private String filePath;
 
     /**
-     * The meme template used, if applicable
+     * The meme template or original version used, if applicable
      */
     @Getter @Setter
     private String template;
 
     /**
      * The type of file
+     * @see Library.FileType
      */
     @Enumerated(EnumType.STRING)
     @Getter @Setter
@@ -67,12 +68,13 @@ public class Meme {
 
     /**
      * The year this meme was made
+     * <p> Default of 0 means "unknown"
      */
     @Getter @Setter
     private int year;
 
     /**
-     * A list of tags identifying this meme
+     * A list of tags identifying this meme. Used for genres and collections.
      */
     @Getter @Setter
     @ElementCollection

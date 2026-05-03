@@ -11,7 +11,7 @@
 	<groupId>com.zeter</groupId>
 	<version>0.0.2</version>
 	<name>meme-db</name>
-	<description>A database for hosting, tagging, and managing memes</description>
+	<description>A web server for hosting, tagging, and managing memes or other visual files</description>
 	<url/>
 	<licenses>
 		<license/>
