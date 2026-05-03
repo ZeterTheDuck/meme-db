@@ -1,4 +1,4 @@
-package com.zeter.meme;
+package com.zeter.memedb;
 
 import java.util.ArrayList;
 import java.util.Arrays;

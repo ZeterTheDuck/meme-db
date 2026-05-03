@@ -1,9 +1,9 @@
-package com.zeter.meme;
+package com.zeter.memedb;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.zeter.meme.Library.*;
+import com.zeter.memedb.Library.*;
 
 import jakarta.persistence.*;
 import lombok.Getter;

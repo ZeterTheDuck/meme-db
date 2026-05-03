@@ -1,4 +1,4 @@
-package com.zeter.meme;
+package com.zeter.memedb;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -1,4 +1,4 @@
-package com.zeter.meme;
+package com.zeter.memedb;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.zeter.meme.Library.*;
-import com.zeter.meme.dto.EditDto;
-import com.zeter.meme.dto.FilterDto;
-import com.zeter.meme.dto.MemeDto;
+import com.zeter.memedb.Library.*;
+import com.zeter.memedb.dto.EditDto;
+import com.zeter.memedb.dto.FilterDto;
+import com.zeter.memedb.dto.MemeDto;
 
 @Controller
 public class MemeController {

@@ -1,4 +1,4 @@
-package com.zeter.meme;
+package com.zeter.memedb;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.TreeMap;
 
-import com.zeter.meme.dto.FilterDto;
+import com.zeter.memedb.dto.FilterDto;
 
 public class FilteredMemeList {
 

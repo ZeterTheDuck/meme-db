@@ -1,6 +1,6 @@
-package com.zeter.meme.dto;
+package com.zeter.memedb.dto;
 
-import com.zeter.meme.Library.FileType;
+import com.zeter.memedb.Library.FileType;
 
 import lombok.Getter;
 import lombok.Setter;
