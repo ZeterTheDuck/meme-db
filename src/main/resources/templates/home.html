@@ -119,7 +119,7 @@
                         template = $($("#image-template").prop("content"));
                         clone = template.clone();
                         clone.find("a").attr("href", meme.filePath);
-                        clone.find("img").attr("src", `/files/thumbnail/${meme.id}_thumb.png`).attr("alt", meme.name); // TODO if the name is empty, use the ID
+                        clone.find("img").attr("src", `/files/thumbnails/${meme.id}_thumb.png`).attr("alt", meme.name); // TODO if the name is empty, use the ID
                         clone.find("a").append($(`<img src="/video-play-icon.png" class="video-overlay">`));
                         break;
                     case "OTHER":

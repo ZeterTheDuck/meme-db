@@ -34,6 +34,6 @@ build/
 
 ### My files ###
 /src/main/resources/static/files/*
-!/src/main/resources/static/files/thumbnail
-/src/main/resources/static/files/thumbnail/*
+!/src/main/resources/static/files/thumbnails
+/src/main/resources/static/files/thumbnails/*
 /src/main/java/com/zeter/testMain.java

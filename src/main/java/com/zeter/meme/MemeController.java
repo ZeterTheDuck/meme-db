@@ -341,7 +341,7 @@ public class MemeController {
                 BufferedImage bi = converter.convert(frame);
 
                 if (i == 2) {
-                    ImageIO.write(bi, "png", new File("meme/src/main/resources/static/files/thumbnail/" + meme.getId() + "_thumb" + ".png"));
+                    ImageIO.write(bi, "png", new File("meme/src/main/resources/static/files/thumbnails/" + meme.getId() + "_thumb" + ".png"));
                 }
             }
         } catch (Exception e) {
