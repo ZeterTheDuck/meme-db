@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<head>
+	<link rel="stylesheet" type="text/css" th:href="@{~/style.css}">
+	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+</head>
+
+<body>
+
+	<div th:if="${message}">
+		<h2 th:text="${message}" />
+	</div>
+
+	<div>
+		<form method="POST" id="upload-form" enctype="multipart/form-data" action="#" th:action="@{/edit}" th:object="${meme}">
+			<label>
+                ID:
+                <input type="text" th:field="*{memeId}" readonly/><br>
+            </label>
+            <label>
+				File Type:<br>
+			</label>
+			<label>
+				<input type="radio" name="fileType" th:field="*{fileType}" value="IMAGE" checked/>Image<br>
+			</label>
+			<label>
+				<input type="radio" name="fileType" th:field="*{fileType}" value="VIDEO"/>Video<br>
+			</label>
+			<label>
+				<input type="radio" name="fileType" th:field="*{fileType}" value="ANIMATED"/>Animated<br>
+			</label>
+			<label>
+				<input type="radio" name="fileType" th:field="*{fileType}" value="OTHER"/>Other<br>
+			</label>
+			<label>
+				Name:
+				<input type="text" th:field="*{name}" /><br>
+			</label>
+			<label>
+				Tags, separated by spaces:
+				<input type="text" th:field="*{tags}" /><br>
+			</label>
+			<label>
+				Restriction level:<br>
+			</label>
+			<label>
+				<input type="radio" name="restriction" th:field="*{restriction}" value="0" checked />0<br>
+			</label>
+			<label>
+				<input type="radio" name="restriction" th:field="*{restriction}" value="1" />1<br>
+			</label>
+			<label>
+				<input type="radio" name="restriction" th:field="*{restriction}" value="2" />2<br>
+			</label>
+			<label>
+				Original creator or post:
+				<input type="text" th:field="*{origin}" /><br>
+			</label>
+			<label>
+				Year of Posting:
+				<input type="number" th:field="*{year}" /><br>
+			</label>
+			<label>
+				Template used:
+				<input type="text" th:field="*{template}" /><br>
+			</label>
+			<label>
+				Text transcription:<br>
+				<textarea th:field="*{text}" rows="5" cols="30"></textarea><br>
+			</label>
+			<label>
+				Description:<br>
+				<textarea th:field="*{description}" rows="5" cols="30"></textarea><br>
+			</label>
+			<input type="submit" value="Edit" />
+		</form>
+	</div>
+</body>
+
+</html>

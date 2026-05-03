@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<h1>List of all tags</h1>
+
+<head>
+	<link rel="stylesheet" type="text/css" th:href="@{~/style.css}">
+	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+</head>
+
+<body>
+
+	<table id="tag-list">
+        <tr th:each="tag : ${tags}">
+            <td th:text="${tag.name}"/>
+            <td th:text="${tag.count}"/>
+        </tr>
+        </table>
+</body>
+
+</html>

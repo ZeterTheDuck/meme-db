@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<head>
+	<link rel="stylesheet" type="text/css" th:href="@{~/style.css}">
+	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+</head>
+
+<body>
+
+	<h2 id="upload-status-message">
+
+	</h2>
+
+	<div>
+		<form method="POST" id="upload-form" enctype="multipart/form-data" action="/upload">
+
+			<label id="drop-zone">
+				Drop file here, or click to upload: <span id="file-name-preview"></span>
+				<input type="file" id="file-input" name="file" /><br>
+			</label>
+			<table>
+				<tr>
+					<td><label type-select>File Type</label></td>
+					<td><select name="fileType" id="type-select">
+						<option value="IMAGE">Image</option>
+						<option value="VIDEO">Video</option>
+						<option value="ANIMATED">Animated</option>
+						<option value="OTHER">Other</option>
+					</select></td>
+				</tr>
+				<tr>
+					<td><label for="name">File Name</label></td>
+					<td><input type="text" id="name"/></td>
+				</tr>
+				<tr>
+					<td><label for="tags-input">Tags</label></td>
+					<td>
+						<label for="tags-input" id="tag-container"></label>
+						<input name="tags" id="tags-input" autocomplete="off" list="tag-suggestions"></input>
+						<datalist id="tag-suggestions">
+							<option th:each="tag : ${tags}" th:value="${tag.name}"/>
+						</datalist>
+					</td>
+				</tr>
+			</table>
+			<label>
+				Restriction level:<br>
+			</label>
+			<label>
+				<input type="radio" name="restriction" value="0" checked />0<br>
+			</label>
+			<label>
+				<input type="radio" name="restriction" value="1" />1<br>
+			</label>
+			<label>
+				<input type="radio" name="restriction" value="2" />2<br>
+			</label>
+			<label>
+				Original creator or post:
+				<input type="text" name="origin" /><br>
+			</label>
+			<label>
+				Year of Posting:
+				<input type="number" name="year" /><br>
+			</label>
+			<label>
+				Template used:
+				<input type="text" name="template" /><br>
+			</label>
+			<label>
+				Text transcription:<br>
+				<textarea name="text" rows="5" cols="30"></textarea><br>
+			</label>
+			<label>
+				Description:<br>
+				<textarea name="description" rows="5" cols="30"></textarea><br>
+			</label>
+			<!-- Prevents enter from triggering the form submission bc it's annoying ig -->
+			<input type="submit" disabled style="display: none" aria-hidden="true"/>
+			<input type="submit" value="Upload" />
+		</form>
+	</div>
+	<script>
+		// SECTION file drop code
+		// Set up drop zone
+		const dropZone = document.getElementById("drop-zone");
+		dropZone.addEventListener("drop", dropHandler);
+		var uplFile = null; // the file to upload
+
+		// Prevent browser from opening the file
+		window.addEventListener("drop", (e) => {
+			if ([...e.dataTransfer.items].some((item) => item.kind === "file")) {
+				e.preventDefault();
+			}
+		});
+
+		// Cancel dragover events 
+		dropZone.addEventListener("dragover", (e) => {
+			const fileItems = [...e.dataTransfer.items].filter(
+				(item) => item.kind === "file",
+			);
+			if (fileItems.length > 0) {
+				e.preventDefault();
+				if (fileItems.some((item) => item.kind === "file")) {
+					e.dataTransfer.dropEffect = "copy";
+				} else {
+					e.dataTransfer.dropEffect = "none";
+				}
+			}
+		});
+
+		window.addEventListener("dragover", (e) => {
+			const fileItems = [...e.dataTransfer.items].filter(
+				(item) => item.kind === "file",
+			);
+			if (fileItems.length > 0) {
+				e.preventDefault();
+				if (!dropZone.contains(e.target)) {
+					e.dataTransfer.dropEffect = "none";
+				}
+			}
+		});
+
+		const preview = document.getElementById("preview");
+
+		function displayPreview(file) {
+			// for (const file of files) {
+			// 	if (file.type.startsWith("image/")) {
+			// 		const li = document.createElement("li");
+			// 		const img = document.createElement("img");
+			// 		img.src = URL.createObjectURL(file);
+			// 		img.alt = file.name;
+			// 		li.appendChild(img);
+			// 		li.appendChild(document.createTextNode(file.name));
+			// 		preview.appendChild(li);
+			// 	}
+			// }
+
+			uplFile = file;
+			$("#file-name-preview").text(file.name);
+
+		}
+
+		function dropHandler(ev) {
+			ev.preventDefault();
+			const files = [...ev.dataTransfer.items]
+				.map((item) => item.getAsFile())
+				.filter((file) => file);
+			displayPreview(files[0]);
+		}
+
+		const fileInput = document.getElementById("file-input");
+		fileInput.addEventListener("change", (e) => {
+			displayPreview(e.target.files[0]);
+		});
+		// !SECTION
+
+		// Handle form submission
+		document.getElementById("upload-form").addEventListener("submit", function (e) {
+			e.preventDefault();
+			const formData = new FormData(e.target);
+			formData.set("file", uplFile);
+			if (formData.get("year") === "") {
+				formData.set("year", 0);
+			} else {
+				formData.set("year", parseInt(formData.get("year")));
+			}
+			formData.set("restriction", parseInt(formData.get("restriction")));
+			console.log(input_tags.toString());
+			formData.set("tags", input_tags); // REVIEW if this is allowed
+
+			submitData(formData);
+		});
+
+		async function submitData(payload) {
+			console.log(payload)
+			try {
+				const response = await fetch(`/upload`, {
+					method: "POST",
+					body: payload
+				});
+				if (!response.ok) {
+					$("#upload-status-message").text("An error occurred while trying to process file upload.").css("color", "red");
+					window.scrollTo(0,0);
+					throw new Error(`Response Status: ${response.status}`);
+					return;
+				} else {
+					// Do something to indicate it worked...
+					$("#upload-status-message").text("Successfully uploaded " + $("#file-name-preview").text() + "!").css("color", "black");
+					document.getElementById("upload-form").reset();
+					$("#file-name-preview").text("");
+					$("#tag-container").empty(); // Remove all child elements (in this case tags)
+					window.scrollTo(0,0);
+				}
+			} catch (error) {
+				console.error(error.message);
+			}
+		}
+
+		var input_tags = [];
+		const allowedCharsRegex = /[^a-zA-Z0-9-_ ,]/gm; // Removes any characters that isn't a letter, number, underscore, or dash. Keeps tag break characters
+		const tagBreakRegex = /[ ,]/gm; // Tags will be split by spaces and commas
+
+		// Create a tag display whenever the user adds a tag
+		document.getElementById("tags-input").addEventListener("input", (event) => {
+			// Check if text would make new tags
+			let input = $("#tags-input").val();
+			if (input == null || input === "") {
+				return;
+			} 
+			// Filter out not allowed characters and make lower case
+			input = input.replace(allowedCharsRegex, "").toLowerCase();
+			// Make sure current text still has a length greater than 0
+			if (input === "") {
+				// If the text would have a length of zero, clear any text
+				$("#tags-input").val("");
+				return;
+			}
+
+			// If a new tag would be made, do it
+			if (tagBreakRegex.test(input)) {
+				let splitTags = input.split(tagBreakRegex);
+				// Add every tag except the last one. Usually the last one will be an empty string. Also, ignore empty strings
+				for (let i = 0; i < splitTags.length - 1; i++) {
+					if (splitTags[i] !== "") {
+						// Record tag to display and add on form submission
+						input_tags.push(splitTags[i]);
+						$("#tag-container").append(`<button class="tag-preview" onclick="deleteTag(this)" type="button">${splitTags[i]}</button>`);
+
+						// REVIEW while I don't care enough to prevent duplicate tags rn, remove the autocomplete option for the tag added, if possible
+						$("#tag-suggestions").find(`[value="${splitTags[i]}"]`).remove();
+
+						splitTags[i] = ""; // Clear so that when the text is reconstructed, the added tag does not display
+					}
+				}
+
+				// Update tag input to match changes
+				$("#tags-input").val(splitTags.toString().replace(/,/g, "")); // Remove unwanted characters from toString function
+			} else {
+				// Make sure that unallowed characters still get removed
+				$("#tags-input").val(input); 
+			}
+
+		});
+
+		// Called when a tag gets clicked on
+		function deleteTag(element) {
+			let text = $(element).text();
+
+			// Add this tag to the autocomplete options
+			$("#tag-suggestions").append(`<option value="${text}"/>`);
+
+			const index = input_tags.indexOf(text); // Gets the index of the first instance of the text
+			if (index !== -1) { // indexOf() will return -1 if the item is not present
+				input_tags.splice(index, 1); // Starting at the index, delete 1 item
+			}
+			$(element).remove();
+		}
+	</script>
+</body>
+
+</html>

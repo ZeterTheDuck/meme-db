@@ -1,0 +1,105 @@
+@property --display-height {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 200px;
+}
+
+@property --video-icon-height {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 100px;
+}
+
+a.file-display {
+    position: relative;
+    display: inline-block;
+
+    img:not(.video-overlay) {
+      height: var(--display-height);
+    }
+
+    .video-overlay {
+      height: var(--video-icon-height);
+      width: var(--video-icon-height);
+      position: absolute;
+      top: calc(0.5 * (100% - var(--video-icon-height)));
+      left: calc(0.5 * (100% - var(--video-icon-height)));
+      opacity: 50%;
+    }
+}
+
+#drop-zone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 500px;
+  max-width: 100%;
+  height: 200px;
+  padding: 1em;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  color: slategray;
+  cursor: pointer;
+}
+
+#file-input {
+  display: none;
+}
+
+#preview {
+  width: 500px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  list-style: none;
+  padding: 0;
+}
+
+#preview li {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin: 0;
+  width: 100%;
+  height: 100px;
+}
+
+#preview img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
+@media screen and (max-width: 480px) {
+  #drop-zone {
+    float: right;
+  }
+}
+
+@media screen and (min-width: 480px) {
+  #drop-zone {
+    width: 90%;
+    margin: auto;
+  }
+
+  #upload-form {
+    font-size: 24px;
+    max-width: 80%;
+    background-color: #eee;
+    padding: 10px;
+    margin: auto;
+    border-radius: 25px;
+
+  }
+}
+
+.tag-preview {
+  border-radius: 15px;
+  background-color: black;
+  color: white;
+  border: 3px black solid;
+  margin: 2px;
+  font-size: 0.8em;
+  padding: 5px
+}

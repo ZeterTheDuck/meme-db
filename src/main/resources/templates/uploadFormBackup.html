@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<head>
+	<link rel="stylesheet" type="text/css" th:href="@{~/style.css}">
+	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+</head>
+
+<body>
+
+	<div th:if="${message}">
+		<h2 th:text="${message}" />
+	</div>
+
+	<div>
+		<form method="POST" enctype="multipart/form-data" action="#" th:action="@{/upload}" th:object="${meme}">
+			<label id="drop-zone">
+				Drop files here, or click to upload:
+				<input type="file" id="file-input" th:field="*{file}" /><br>
+			</label>
+			<label>
+				File Type:<br>
+			</label>
+			<label>
+				<input type="radio" name="file-type" th:field="*{fileType}" value="IMAGE" checked />Image<br>
+			</label>
+			<label>
+				<input type="radio" name="file-type" th:field="*{fileType}" value="VIDEO" />Video<br>
+			</label>
+			<label>
+				<input type="radio" name="file-type" th:field="*{fileType}" value="ANIMATED" />Animated<br>
+			</label>
+			<label>
+				<input type="radio" name="file-type" th:field="*{fileType}" value="OTHER" />Other<br>
+			</label>
+			<label>
+				Name:
+				<input type="text" th:field="*{name}" /><br>
+			</label>
+			<label>
+				Tags, separated by spaces:
+				<input type="text" th:field="*{tags}" /><br>
+			</label>
+			<label>
+				Restriction level:<br>
+			</label>
+			<label>
+				<input type="radio" name="restriction" th:field="*{restriction}" value="0" checked />0<br>
+			</label>
+			<label>
+				<input type="radio" name="restriction" th:field="*{restriction}" value="1" />1<br>
+			</label>
+			<label>
+				<input type="radio" name="restriction" th:field="*{restriction}" value="2" />2<br>
+			</label>
+			<label>
+				Original creator or post:
+				<input type="text" th:field="*{origin}" /><br>
+			</label>
+			<label>
+				Year of Posting:
+				<input type="number" th:field="*{year}" /><br>
+			</label>
+			<label>
+				Template used:
+				<input type="text" th:field="*{template}" /><br>
+			</label>
+			<label>
+				Text transcription:<br>
+				<textarea th:field="*{text}" rows="5" cols="30"></textarea><br>
+			</label>
+			<label>
+				Description:<br>
+				<textarea th:field="*{description}" rows="5" cols="30"></textarea><br>
+			</label>
+			<input type="submit" id="upload-button" value="Upload" />
+		</form>
+	</div>
+	<script>
+		// Set up drop zone
+		const dropZone = document.getElementById("drop-zone");
+		dropZone.addEventListener("drop", dropHandler);
+
+		// Prevent browser from opening the file
+		window.addEventListener("drop", (e) => {
+			if ([...e.dataTransfer.items].some((item) => item.kind === "file")) {
+				e.preventDefault();
+			}
+		});
+
+		// Cancel dragover events 
+		dropZone.addEventListener("dragover", (e) => {
+			const fileItems = [...e.dataTransfer.items].filter(
+				(item) => item.kind === "file",
+			);
+			if (fileItems.length > 0) {
+				e.preventDefault();
+				if (fileItems.some((item) => item.kind === "file")) {
+					e.dataTransfer.dropEffect = "copy";
+				} else {
+					e.dataTransfer.dropEffect = "none";
+				}
+			}
+		});
+
+		window.addEventListener("dragover", (e) => {
+			const fileItems = [...e.dataTransfer.items].filter(
+				(item) => item.kind === "file",
+			);
+			if (fileItems.length > 0) {
+				e.preventDefault();
+				if (!dropZone.contains(e.target)) {
+					e.dataTransfer.dropEffect = "none";
+				}
+			}
+		});
+
+		const preview = document.getElementById("preview");
+
+		function displayPreview(files) {
+			for (const file of files) {
+				if (file.type.startsWith("image/")) {
+					const li = document.createElement("li");
+					const img = document.createElement("img");
+					img.src = URL.createObjectURL(file);
+					img.alt = file.name;
+					li.appendChild(img);
+					li.appendChild(document.createTextNode(file.name));
+					preview.appendChild(li);
+				}
+			}
+		}
+
+		function dropHandler(ev) {
+			ev.preventDefault();
+			const files = [...ev.dataTransfer.items]
+				.map((item) => item.getAsFile())
+				.filter((file) => file);
+			displayPreview(files);
+		}
+
+		const fileInput = document.getElementById("file-input");
+		fileInput.addEventListener("change", (e) => {
+			displayPreview(e.target.files);
+		});
+
+		// Handle form submission
+		document.getElementById("upload-button").addEventListener("submit", function (e) {
+			e.preventDefault();
+
+			
+		});
+	</script>
+</body>
+
+</html>

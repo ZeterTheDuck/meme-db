@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <link rel="stylesheet" type="text/css" th:href="@{~/style.css}">
+        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    </head>
+
+    <body>
+        hello world!
+
+        <!-- TODO add a filter form -->
+        <div id="form">
+            <!-- <label>
+                Check to edit instead of open:
+                <input type="checkbox" id="edit-toggle">
+            </label> -->
+
+            <form id="filters" action="#" th:action="@{/}" th:object="${filterDto}" method="POST">
+                <label>
+                    Tags, separated by spaces:
+                    <!-- TODO use same code from the upload form to display tags nicely -->
+                    <input type="text" th:field="*{tags}" /><br>
+                </label>
+                
+                <label>
+                    Restriction level:<br>
+                </label>
+                <label>
+                    <input type="radio" name="restriction" th:field="*{restriction}" value="0"/>0<br>
+                </label>
+                <label>
+                    <input type="radio" name="restriction" th:field="*{restriction}" value="1" />1<br>
+                </label>
+                <label>
+                    <input type="radio" name="restriction" th:field="*{restriction}" value="2" />2<br>
+                </label>
+
+                <label>
+                    File Type:<br>
+                </label>
+                <label>
+                    <input type="radio" name="fileType" th:field="*{fileType}" value="" id="select-file-type-any"/>Any<br>
+                </label>
+                <label>
+                    <input type="radio" name="fileType" th:field="*{fileType}" value="IMAGE"/>Image<br>
+                </label>
+                <label>
+                    <input type="radio" name="fileType" th:field="*{fileType}" value="VIDEO"/>Video<br>
+                </label>
+                <label>
+                    <input type="radio" name="fileType" th:field="*{fileType}" value="ANIMATED"/>Animated<br>
+                </label>
+                <label>
+                    <input type="radio" name="fileType" th:field="*{fileType}" value="OTHER"/>Other<br>
+                </label>
+
+                <label>
+                    Filter by text:<br>
+                    <textarea th:field="*{textFilter}" rows="5" cols="30"></textarea><br>
+                </label>
+
+                <input type="submit" value="Submit" />
+            </form>
+        </div>
+
+        <div id="results">
+            <p>
+                <span id="result-count"></span> Results:
+            </p>
+            
+        </div>
+
+        <div id="templates">
+            <template id="image-template">
+                <a class="file-display" href="" target="_blank">
+                    <img src="" alt="">
+                </a>
+            </template>
+
+            <template id="video-template">
+                <a class="file-display" href="" target="_blank">
+                    <video controls>
+                        <source src="" type="">
+                    </video>
+                </a>
+            </template>
+
+            <template id="other-template">
+                <a class="file-display" href="" target="_blank">file</a>
+            </template>
+        </div>
+
+    </body>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        const srcFileList = /*[[${files}]]*/[];
+        const filterDto = /*[[${filterDto}]]*/"";
+
+        const extRegex = /(?:.+\.)(.+)/;
+
+        $(document).ready(function () {
+            if (filterDto.fileType === null) {
+                $("#select-file-type-any").prop("checked", true);
+            }
+
+            srcFileList.forEach((meme) => {
+                var template;
+                var clone;
+                switch (meme.fileType) {
+                    case "IMAGE": case "ANIMATED":
+                        template = $($("#image-template").prop("content"));
+                        clone = template.clone();
+                        clone.find("a").attr("href", meme.filePath);
+                        clone.find("img").attr("src", meme.filePath).attr("alt", meme.name);
+                        break;
+                    case "VIDEO":
+                        // TODO some special logic to overlay a "play video" icon for videos
+                        template = $($("#image-template").prop("content"));
+                        clone = template.clone();
+                        clone.find("a").attr("href", meme.filePath);
+                        clone.find("img").attr("src", `/files/thumbnail/${meme.id}_thumb.png`).attr("alt", meme.name); // TODO if the name is empty, use the ID
+                        clone.find("a").append($(`<img src="/video-play-icon.png" class="video-overlay">`));
+                        break;
+                    case "OTHER":
+                        // yeah idk
+                        break;
+                    default:
+                    // Shouldn't ever get here
+                }
+                $(clone).appendTo($("#results"));
+            });
+            $("#result-count").text(srcFileList.length);
+
+            $("img").on("load", function () {
+                $(this).parent().css("--video-icon-height", (0.5 * Math.min($(this).width(), $(this).height())) + "px");
+            })
+
+            $("a").click(function(event) {
+
+            });
+        })
+        /*]]>*/
+    </script>
+
+</html>
