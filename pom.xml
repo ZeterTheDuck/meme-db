@@ -9,10 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.zeter</groupId>
-	<artifactId>meme</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>meme</name>
-	<description>Demo project for Spring Boot</description>
+	<version>0.0.2</version>
+	<name>meme-db</name>
+	<description>A database for hosting, tagging, and managing memes</description>
 	<url/>
 	<licenses>
 		<license/>
