@@ -329,7 +329,7 @@ public class MemeController {
      * @throws Exception
      */
     private static void dumpVideoFrame(Meme meme) throws Exception {
-        FFmpegFrameGrabber g = new FFmpegFrameGrabber("meme/src/main/resources/static" + meme.getFilePath());
+        FFmpegFrameGrabber g = new FFmpegFrameGrabber("meme/src/main/resources" + meme.getFilePath());
         g.start();
         try {
             Java2DFrameConverter converter = new Java2DFrameConverter();
@@ -341,7 +341,7 @@ public class MemeController {
                 BufferedImage bi = converter.convert(frame);
 
                 if (i == 2) {
-                    ImageIO.write(bi, "png", new File("meme/src/main/resources/static/files/thumbnails/" + meme.getId() + "_thumb" + ".png"));
+                    ImageIO.write(bi, "png", new File("meme/src/main/resources/files/thumbnails/" + meme.getId() + "_thumb" + ".png"));
                 }
             }
         } catch (Exception e) {
