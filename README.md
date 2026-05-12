@@ -3,9 +3,8 @@ A basic web server for hosting, tagging, and managing memes or other visual file
 
 # Installation & Setup
 You may need to add the following directories (Github doesn't let you add empty directories)
-* `src/main/resources/files`
-* `src/main/resources/files/memes`
-* `src/main/resources/files/thumbnails`
+* `src/main/resources/static/files`
+* `src/main/resources/static/files/thumbnails`
 
 Files and thumbnails for videos will get stored here.
 

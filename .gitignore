@@ -33,6 +33,7 @@ build/
 .vscode/
 
 ### My files ###
-/src/main/resources/files/memes
-/src/main/resources/files/thumbnails
+/src/main/resources/static/files/*
+!/src/main/resources/static/files/thumbnails
+/src/main/resources/static/files/thumbnails/*
 /src/main/java/com/zeter/testMain.java
