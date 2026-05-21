@@ -29,7 +29,7 @@ import com.zeter.memedb.dto.MemeDto;
 @Controller
 public class MemeController {
 
-    private final static String FILE_DEST = "meme\\src\\main\\resources\\static\\files\\";
+    private final static String FILE_DEST = "meme-db/src/main/resources/static/files/memes/";
 
     @Autowired
     private MemeRepository repository;
@@ -104,7 +104,7 @@ public class MemeController {
         dto.getFile().transferTo(file.toPath());
 
         // Load inputted info into database entry
-        meme.setFilePath("/files/" + meme.getId() + extension);
+        meme.setFilePath("/files/memes/" + meme.getId() + extension);
 
         meme.setFileType(dto.getFileType());
 
